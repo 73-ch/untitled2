@@ -1,0 +1,14 @@
+<script>
+    window.addEventListener("keydown", (e) => {
+        if ([16, 17, 18, 37, 38, 39, 40, 91, 92].indexOf(e.keyCode) >= 0)return false;
+        App.room.keyPressed({"keyCode": e.keyCode, "shift": e.shiftKey});
+    });
+    let flag = 0;
+    window.addEventListener("devicemotion", (e) => {
+        flag++;
+        if (flag % 15 == 0) {
+            let value = Math.abs(e.acceleration.x + e.acceleration.y + e.acceleration.z);
+            App.room.acceleration({"acceleration": value});
+        }
+    });
+</script>

@@ -1,0 +1,16 @@
+<button id="next" onclick="add()">next</button>
+<button id="before" onclick="decrease()">before</button>
+
+
+<script>
+    let slide = 0;
+    function add() {
+        slide++;
+        App.room.slide({"slide": slide});
+    }
+
+    function decrease() {
+        slide--;
+        App.room.slide({"slide": slide});
+    }
+</script>
