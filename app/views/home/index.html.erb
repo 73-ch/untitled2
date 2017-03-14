@@ -143,6 +143,102 @@
 </script>
 
 
+<script id="tvs3" type="x-shader/x-vertex">
+    attribute vec3 color;
+    attribute vec3 normals;
+    attribute float v_num;
+    uniform float time;
+    uniform float diff;
+
+    varying vec3 vColor;
+
+    vec2 random2(vec2 st){
+      st = vec2( dot(st,vec2(127.1,311.7)),
+      dot(st,vec2(269.5,183.3)) );
+      return -1.0 + 2.0*fract(sin(st)*43758.5453123);
+    }
+
+    float noise(vec2 st) {
+      vec2 i = floor(st);
+      vec2 f = fract(st);
+
+      vec2 u = f*f*(3.0-2.0*f);
+
+      return mix( mix( dot( random2(i + vec2(0.0,0.0) ), f - vec2(0.0,0.0) ),
+      dot( random2(i + vec2(1.0,0.0) ), f - vec2(1.0,0.0) ), u.x),
+      mix( dot( random2(i + vec2(0.0,1.0) ), f - vec2(0.0,1.0) ),
+      dot( random2(i + vec2(1.0,1.0) ), f - vec2(1.0,1.0) ), u.x), u.y);
+    }
+
+    void main() {
+      vec3 t_pos = position;
+      vec4 mvPosition = modelViewMatrix * vec4(t_pos, 1.0);
+
+      gl_Position = projectionMatrix * mvPosition;
+      gl_PointSize = 2.;
+      vColor = vec3(0.784, 0.957, 0.576);
+    }
+
+
+
+</script>
+<script id="tfs3" type="x-shader/x-fragment">
+    precision highp float;
+    varying vec3 vColor;
+    void main() {
+      gl_FragColor = vec4(vColor, 0.3);
+    }
+</script>
+
+
+<script id="tvs4" type="x-shader/x-vertex">
+    attribute vec3 color;
+    attribute vec3 normals;
+    attribute float v_num;
+    uniform float time;
+    uniform float diff;
+
+    varying vec3 vColor;
+
+    vec2 random2(vec2 st){
+      st = vec2( dot(st,vec2(127.1,311.7)),
+      dot(st,vec2(269.5,183.3)) );
+      return -1.0 + 2.0*fract(sin(st)*43758.5453123);
+    }
+
+    float noise(vec2 st) {
+      vec2 i = floor(st);
+      vec2 f = fract(st);
+
+      vec2 u = f*f*(3.0-2.0*f);
+
+      return mix( mix( dot( random2(i + vec2(0.0,0.0) ), f - vec2(0.0,0.0) ),
+      dot( random2(i + vec2(1.0,0.0) ), f - vec2(1.0,0.0) ), u.x),
+      mix( dot( random2(i + vec2(0.0,1.0) ), f - vec2(0.0,1.0) ),
+      dot( random2(i + vec2(1.0,1.0) ), f - vec2(1.0,1.0) ), u.x), u.y);
+    }
+
+    void main() {
+      vec3 t_pos = position;
+      vec4 mvPosition = modelViewMatrix * vec4(t_pos, 1.0);
+
+      gl_Position = projectionMatrix * mvPosition;
+      gl_PointSize = 2.;
+      vColor = vec3(0.784, 0.957, 0.576);
+    }
+
+
+
+</script>
+<script id="tfs4" type="x-shader/x-fragment">
+    precision highp float;
+    varying vec3 vColor;
+    void main() {
+      gl_FragColor = vec4(vColor, 0.3);
+    }
+</script>
+
+
 <script>
     let font;
     let camera;
@@ -214,6 +310,41 @@
         }
 
         scene.add(text2);
+
+        let text3 = new THREE.Group();
+
+        let title3 = "Bookmarker";
+        title3 = title3.split("");
+
+        for (let i = 0; i < title3.length; i++) {
+            let t_mesh = createText(title3[i], 50, 10, "tvs3", "tfs3");
+            t_mesh.position.x = -300;
+            t_mesh.position.y = 200;
+            t_mesh.position.z = -600 - i * 50;
+            t_mesh.rotation.y = Math.PI * (-1.5);
+
+            text3.add(t_mesh);
+        }
+        text3.name = "text3";
+        scene.add(text3);
+
+
+        let text4 = new THREE.Group();
+
+        let title4 = "VRTyping";
+        title4 = title4.split("");
+
+        for (let i = 0; i < title4.length; i++) {
+            let t_mesh = createText(title4[i], 50, 10, "tvs4", "tfs4");
+            t_mesh.position.x = -300 - i * 50;
+            t_mesh.position.y = 400 - i * 25;
+            t_mesh.position.z = 900;
+            t_mesh.rotation.y = Math.PI;
+
+            text4.add(t_mesh);
+        }
+        text4.name = "text4";
+        scene.add(text4);
 
 
         let p_geometry = new THREE.PlaneGeometry(3000, 3000);
